@@ -17,14 +17,14 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const post = await db.findById(req.params.id)
+    const post = await db.findById(req.params.id);
     res.status(202).json(post);
   } catch (error) {
     res.status(500).json({
-      message: 'error retrieving post'
-    })
+      message: "error retrieving post"
+    });
   }
-})
+});
 
 router.post("/", async (req, res) => {
   try {
@@ -33,6 +33,21 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error adding the hub"
+    });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const count = await db.remove(req.params.id);
+    if (count > 0) {
+      res.status(200).json({ message: "post deleted" });
+    } else {
+      res.status(404).json({ message: "cannot find post" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "error deleting"
     });
   }
 });
